@@ -1,0 +1,15 @@
+#!/usr/bin/python
+import os
+import subprocess
+import re
+
+ad_check = subprocess.check_output(['getent','passwd'],stderr=subprocess.STDOUT)
+#result = re.findall('NA/+\S+.\S+', ad_check)
+result = re.findall('(NA/+\S+.\S+):/bin', ad_check)
+
+if result:
+
+	print "AD bindings OK."
+
+else:
+	print "AD bindings not OK."

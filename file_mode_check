@@ -1,0 +1,29 @@
+#!/usr/bin/python
+
+import os
+import sys
+import pwd
+import datetime
+import stat
+
+now = datetime.datetime.now()
+ago = now-datetime.timedelta(days=30)
+localuid = "nobody, www-data "
+mask = "0777"
+
+dir = '/var/www/'
+
+for root,directories,filenames in os.walk(dir):
+# Skip hidden files ###
+     filenames = [f for f in filenames if not f[0] == '.']	
+# Go find permissions file owners in the tree ###
+     for files in filenames:
+       tree = os.path.join(root,files)
+       st = os.stat(tree)
+       owner = pwd.getpwuid(st.st_uid).pw_name
+       mtime = datetime.datetime.fromtimestamp(st.st_mtime)
+       mode = oct(stat.S_IMODE(st.st_mode))	
+#       if owner !="nobody" and owner !="www-data" and mtime > ago :
+       if mode != mask and owner != localuid and mtime > ago  :
+#             print tree,owner
+             print ('%s %s modified %s by %s' %(mode,tree,mtime,owner))

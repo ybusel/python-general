@@ -1,0 +1,30 @@
+#!/usr/bin/python
+
+# To install MySQLdb -> apt-get install python-mysqldb ####
+import MySQLdb as db
+import sys
+
+host = 'hostname'
+user = 'username'
+password = 'passwd'
+
+# Open database connection:
+con = db.connect(host, user, password)
+
+# To perform a query, you first need a cursor, and then you can execute queries on it:
+cursr = con.cursor(db.cursors.DictCursor)
+cursr.execute('show slave status')
+
+# Now find the result:
+slave_status = cursr.fetchone()
+#slave_sql = slave_status["Slave_SQL_Running"]
+#slave_io = slave_status["Slave_IO_Running"]
+
+if (slave_status["Slave_SQL_Running"] == "Yes") and (slave_status["Slave_IO_Running"] == "Yes"):
+        print "Status OK"
+        sys.exit (0)
+else:
+        print "Slave DB is not running"
+        sys.exit (1)
+
+db.close()
