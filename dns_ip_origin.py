@@ -14,7 +14,7 @@ try:
         for line in file.readlines():
                 regex = re.findall("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}",line)
                 if regex:
-                        print "%s\n" %regex
+                        print(", ".join(regex))
 #                       print line
 
 except IOError, (errno, strerror):
