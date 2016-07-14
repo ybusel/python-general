@@ -1,0 +1,26 @@
+#!/usr/bin/python 
+2 import sys 
+3 import re 
+4 
+ # Extract certain lines with IP addresses only from
+ # dns records
+5 try: 
+6     if sys.argv[1:]: 
+7         print "File: %s" % (sys.argv[1]) 
+8         dnsfile = sys.argv[1] 
+9     else: 
+10         dnsfile = raw_input("Please enter dns file to parse: ") 
+11 
+ 
+12         file = open(dnsfile,"r") 
+13 
+ 
+14         for line in file.readlines()[9:20]: 
+15                 regex = re.findall("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}",line) 
+16                 if regex: 
+17                         print(", ".join(regex)) 
+18 #                       print line 
+19 
+ 
+20 except IOError, (errno, strerror): 
+21         print "I/O Error(%s) : %s" % (errno, strerror) 
