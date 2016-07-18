@@ -1,0 +1,29 @@
+Enter file contents here#!/usr/bin/python
+
+import sys
+import re
+
+try:
+    if sys.argv[1:]:
+        print "File: %s" % (sys.argv[1])
+        dnsfile = sys.argv[1]
+    else:
+        dnsfile = raw_input("Please enter dns file to parse: ")
+
+        file = open(dnsfile,"r")
+        ips = []
+
+# Get the full list of all ip addresses in the file.
+        for line in file.readlines():
+                regex = re.findall("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}",line)
+                if regex:
+                        a = ", ".join(regex)
+# Get only non repeating ip addresses in the file.                        
+                        if a not in ips:
+                                ips.append(a)
+                                if a is not '':
+                                        print ("".join(a))
+
+
+except IOError, (errno, strerror):
+        print "I/O Error(%s) : %s" % (errno, strerror)
