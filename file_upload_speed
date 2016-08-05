@@ -1,0 +1,32 @@
+#!/usr/bin/python
+
+import pycurl
+import sys
+import os
+from os.path import getsize
+import datetime
+
+size = os.stat('/tmp/testUP').st_size
+c = pycurl.Curl()
+file = open('/tmp/testUP')
+start = datetime.datetime.now()
+c.setopt(pycurl.URL, 'ftp://ftp-akqa.egnyte.com/Private/egnyte.nasync/SJC_Upload/testUP')
+c.setopt(pycurl.USERPWD, 'egnyte.nasync$akqa:2*2equal4')
+c.setopt(pycurl.FTP_USE_EPSV,0)
+c.setopt(pycurl.FTP_SSL,1)
+#c.setopt(pycurl.FTPSSLAUTH, 3)
+#c.setopt(pycurl.SSL_VERIFYPEER,1)
+#c.setopt(pycurl.SSL_VERIFYHOST,2)
+c.setopt(pycurl.VERBOSE, 1)
+c.setopt(pycurl.INFILE, file)
+c.setopt(pycurl.INFILESIZE, getsize('/tmp/testUP'))
+c.setopt(pycurl.UPLOAD, 1)
+c.perform()
+end = datetime.datetime.now()
+#print c.getinfo(pycurl.SPEED_UPLOAD)
+c.close()
+elapsed_time = end - start
+fsize_in_kb = (size / 1000)
+upspeed = (fsize_in_kb / elapsed_time.seconds)
+print "Upload speed is %d kbps" % (upspeed)
+print "Upload time is %d secs" % (elapsed_time.seconds)
