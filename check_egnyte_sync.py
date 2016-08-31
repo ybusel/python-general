@@ -3,12 +3,31 @@ import requests
 import datetime
 import time
 from bs4 import BeautifulSoup
-import sys
+import sys, getopt
 
+#url = raw_input( "Please enter hostname(http://hostname:8806): ")
+#user = raw_input( "Login username: ")
+#pwd = raw_input( "Login password: ")
 
-url = raw_input( "Please enter hostname(http://hostname:8806): ")
-user = raw_input( "Login username: ")
-pwd = raw_input( "Login password: ")
+url = ''
+user = ''
+pwd = ''
+
+try:
+        myopts, args = getopt.getopt(sys.argv[1:], "U:u:p:")
+except getopt.GetoptError as e:
+        print (str(e))
+        print ("Usage: %s -U url:8806 -u user -p pwd" % sys.argv[0])
+        sys.exit(2)
+
+for o, a in myopts:
+        if o == '-U':
+                url = a
+        elif o == '-u':
+                user = a
+        elif o == '-p':
+                pwd = a
+
 
 r = requests.get(url, auth=(user,pwd), stream=True)
 page = r.content
