@@ -35,7 +35,6 @@ for o, a in myopts:
 url_d = list(urlparse.urlsplit('http://localhost:8806'))
 url_d[1] = re.sub('^[^:]*', hostname, url_d[1])
 url = urlparse.urlunsplit(url_d)
-print url
 r = requests.get(url, auth=(usr,pwd), stream=True)
 page = r.content
 soup = BeautifulSoup(page)
